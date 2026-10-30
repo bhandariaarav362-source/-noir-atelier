@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Order Confirmed | Noir Atelier</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f1eb;
+      color: #222;
+      font-family: Georgia, serif;
+    }
+
+    header {
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd6cb;
+    }
+
+    header h1 {
+      font-size: 27px;
+      font-weight: normal;
+      letter-spacing: 5px;
+      margin: 0 0 20px;
+    }
+
+    nav a {
+      color: #222;
+      text-decoration: none;
+      margin: 0 12px;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 65px auto;
+      padding: 0 22px 90px;
+      text-align: center;
+    }
+
+    .checkmark {
+      width: 90px;
+      height: 90px;
+      border: 1px solid #8b785e;
+      border-radius: 50%;
+      margin: 0 auto 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b785e;
+      font-size: 42px;
+    }
+
+    .eyebrow {
+      color: #8b785e;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: 42px;
+      font-weight: normal;
+      margin: 20px 0;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 15px;
+      line-height: 1.9;
+      margin-bottom: 45px;
+    }
+
+    .order-card {
+      background: #faf8f4;
+      border: 1px solid #e1dcd3;
+      padding: 35px;
+      text-align: left;
+    }
+
+    .order-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid #ddd6cb;
+      padding-bottom: 25px;
+      margin-bottom: 20px;
+    }
+
+    .small-label {
+      display: block;
+      color: #8b785e;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .order-number {
+      font-size: 18px;
+    }
+
+    .order-date {
+      font-size: 13px;
+      color: #777;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: normal;
+      margin: 30px 0 15px;
+    }
+
+    .order-item {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 1px solid #e1dcd3;
+    }
+
+    .order-item img {
+      width: 70px;
+      height: 80px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .item-details {
+      flex: 1;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    .item-details strong {
+      display: block;
+      font-size: 15px;
+      font-weight: normal;
+    }
+
+    .item-price {
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding-top: 25px;
+      margin-top: 15px;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .demo-note {
+      color: #888;
+      font-size: 11px;
+      line-height: 1.8;
+      margin: 30px 0;
+      letter-spacing: 1px;
+    }
+
+    .continue-btn {
+      display: block;
+      max-width: 430px;
+      margin: 35px auto 0;
+      padding: 21px;
+      background: #222;
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      transition: background 0.3s;
+    }
+
+    .continue-btn:hover {
+      background: #8b785e;
+    }
+
+    .empty-state {
+      color: #777;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 34px;
+      }
+
+      .order-card {
+        padding: 22px;
+      }
+
+      .order-heading {
+        flex-direction: column;
+      }
+
+      .item-price {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag</a>
+    <a href="orders.html">My Orders</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <div class="checkmark">✓</div>
+
+    <p class="eyebrow">
+      NOIR ATELIER / ORDER CONFIRMATION
+    </p>
+
+    <h2>Your Order Is Confirmed.</h2>
+
+    <p class="subtitle" id="welcome-message">
+      Thank you for choosing Noir Atelier.
+    </p>
+
+    <div class="order-card" id="order-card">
+
+      <div class="order-heading">
+
+        <div>
+          <span class="small-label">ORDER NUMBER</span>
+          <span class="order-number" id="order-number">
+            —
+          </span>
+        </div>
+
+        <div>
+          <span class="small-label">ORDER DATE</span>
+          <span class="order-date" id="order-date">
+            —
+          </span>
+        </div>
+
+      </div>
+
+      <h3>Your Selection</h3>
+
+      <div id="confirmed-items"></div>
+
+      <div class="total-row">
+        <span>Demo Total</span>
+        <span id="confirmed-total">$0.00 CAD</span>
+      </div>
+
+    </div>
+
+    <p class="demo-note">
+      THIS IS A DEMONSTRATION ORDER.
+      <br>
+      NO PAYMENT WAS CHARGED.
+      <br>
+      NO PRODUCTS WILL BE SHIPPED.
+    </p>
+
+    <a href="index.html#collection" class="continue-btn">
+      CONTINUE SHOPPING →
+    </a>
+
+  </main>
+
+  <script>
+    const savedOrder =
+      localStorage.getItem("noirDemoOrder");
+
+    let order = null;
+
+    try {
+      order = savedOrder
+        ? JSON.parse(savedOrder)
+        : null;
+    } catch (error) {
+      order = null;
+    }
+
+    const money = amount =>
+      "$" + Number(amount).toFixed(2) + " CAD";
+
+    if (!order || !Array.isArray(order.items)) {
+
+      document.getElementById("welcome-message")
+        .textContent =
+          "No demo order has been placed yet.";
+
+      document.getElementById("order-card")
+        .innerHTML =
+          '<p class="empty-state">Visit our collection to begin your experience.</p>';
+
+    } else {
+
+      const orderDate = new Date(order.createdAt);
+
+      const orderNumber =
+        "NA-" +
+        orderDate.getFullYear() +
+        "-" +
+        String(orderDate.getTime()).slice(-6);
+
+      document.getElementById("order-number")
+        .textContent = orderNumber;
+
+      document.getElementById("order-date")
+        .textContent =
+          orderDate.toLocaleDateString("en-CA", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          });
+
+      document.getElementById("welcome-message")
+        .textContent =
+          "Thank you, " + (order.name || "Guest") +
+          ". Your demo order has been placed successfully.";
+
+      const confirmedItems =
+        document.getElementById("confirmed-items");
+
+      order.items.forEach(function(item) {
+
+        const row = document.createElement("div");
+        row.className = "order-item";
+
+        const picture = document.createElement("img");
+        picture.src = item.image || "";
+        picture.alt = item.name || "Product";
+
+        const details = document.createElement("div");
+        details.className = "item-details";
+
+        const name = document.createElement("strong");
+        name.textContent = item.name || "Product";
+
+        const info = document.createElement("div");
+        info.textContent =
+          "Size: " + (item.size || "N/A") +
+          " | Qty: " + (Number(item.quantity) || 1);
+
+        const price = document.createElement("span");
+        price.className = "item-price";
+
+        price.textContent = money(
+          (Number(item.price) || 0) *
+          (Number(item.quantity) || 1)
+        );
+
+        details.appendChild(name);
+        details.appendChild(info);
+
+        row.appendChild(picture);
+        row.appendChild(details);
+        row.appendChild(price);
+
+        confirmedItems.appendChild(row);
+      });
+
+      document.getElementById("confirmed-total")
+        .textContent = money(order.total);
+
+      // The demo order is saved separately,
+      // so we can clear the shopping bag
+      // after successful demo checkout.
+      localStorage.removeItem("noirBag");
+    }
+  </script>
+
+</body>
+</html>

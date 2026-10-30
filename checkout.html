@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Account | Noir Atelier</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f1eb;
+      color: #222;
+      font-family: Georgia, serif;
+    }
+
+    header {
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd6cb;
+    }
+
+    header h1 {
+      font-size: 27px;
+      font-weight: normal;
+      letter-spacing: 5px;
+      margin: 0 0 20px;
+    }
+
+    nav a {
+      color: #222;
+      text-decoration: none;
+      margin: 0 12px;
+      font-size: 14px;
+    }
+
+    .checkout-page {
+      max-width: 480px;
+      margin: 65px auto;
+      padding: 0 25px 60px;
+    }
+
+    .eyebrow {
+      color: #8b785e;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 40px;
+      font-weight: normal;
+      margin: 25px 0 12px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 17px;
+      margin-bottom: 25px;
+      border: 1px solid #d5cec3;
+      border-radius: 0;
+      background: white;
+      color: #222;
+      font-size: 15px;
+    }
+
+    button,
+    .guest-checkout {
+      display: block;
+      width: 100%;
+      padding: 20px;
+      border: 1px solid #222;
+      border-radius: 0;
+      background: #222;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .signup-text {
+      margin: 25px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .signup-text a {
+      color: #8b785e;
+      text-decoration: underline;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 35px 0;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #d5cec3;
+    }
+
+    .guest-checkout {
+      background: transparent;
+      color: #222;
+      border-color: #8b785e;
+    }
+
+    .guest-checkout:hover {
+      background: #222;
+      color: white;
+    }
+
+    .demo-note {
+      margin-top: 25px;
+      text-align: center;
+      color: #888;
+      font-size: 10px;
+      letter-spacing: 2px;
+      line-height: 1.8;
+    }
+
+    .message {
+      text-align: center;
+      font-size: 13px;
+      color: #8b785e;
+      margin-top: 15px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag</a>
+    <a href="orders.html">My Orders</a>
+    </nav>
+  </header>
+
+  <main class="checkout-page">
+
+    <p class="eyebrow">
+      NOIR ATELIER / CHECKOUT
+    </p>
+
+    <h2>Welcome Back.</h2>
+
+    <p class="subtitle">
+      Sign in to continue your experience.
+    </p>
+
+    <form id="login-form">
+
+      <label for="email">
+        Email Address
+      </label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        required
+      >
+
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">
+        SIGN IN →
+      </button>
+
+    </form>
+
+    <p id="login-message" class="message"></p>
+
+    <p class="signup-text">
+      New to Noir Atelier?
+      <a href="#" id="sign-up">
+        Create an account
+      </a>
+    </p>
+
+    <div class="divider">OR</div>
+
+    <a href="payment.html" class="guest-checkout">
+      CONTINUE AS GUEST →
+    </a>
+
+    <p class="demo-note">
+      DEMO EXPERIENCE — NO ACCOUNT REQUIRED
+      <br>
+      NO REAL PAYMENTS WILL BE PROCESSED
+    </p>
+
+  </main>
+
+  <script>
+    const loginForm =
+      document.getElementById("login-form");
+
+    const loginMessage =
+      document.getElementById("login-message");
+
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      loginMessage.textContent =
+        "Demo mode: Please continue as a guest.";
+    });
+
+    document.getElementById("sign-up")
+      .addEventListener("click", function(event) {
+        event.preventDefault();
+
+        loginMessage.textContent =
+          "Account registration is not available in this demo. Continue as a guest.";
+      });
+  </script>
+
+</body>
+</html>

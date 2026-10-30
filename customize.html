@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Custom Studio | Noir Atelier</title>
+<style>
+:root {
+  --ink:#22231f;
+  --muted:#79766f;
+  --line:#dcd7cd;
+  --paper:#f5f2ec;
+  --card:#fffdf9;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Arial,sans-serif;
+}
+button,input,select {font:inherit}
+button {cursor:pointer}
+a {color:inherit;text-decoration:none}
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:22px 5%;
+  border-bottom:1px solid var(--line);
+  background:var(--card);
+}
+.logo {
+  font:21px Georgia,serif;
+  letter-spacing:4px;
+}
+header a:last-child {font-size:12px}
+.hero {
+  text-align:center;
+  padding:55px 15px 35px;
+}
+.eyebrow {
+  letter-spacing:3px;
+  font-size:11px;
+  color:#a18462;
+  text-transform:uppercase;
+}
+.hero h1 {
+  font:normal clamp(40px,7vw,72px) Georgia,serif;
+  margin:15px 0;
+}
+.hero p,.muted {
+  color:var(--muted);
+  line-height:1.7;
+}
+.layout {
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:24px;
+  max-width:1250px;
+  margin:auto;
+  padding:0 20px 70px;
+}
+.panel {
+  background:var(--card);
+  border:1px solid var(--line);
+  padding:24px;
+  border-radius:8px;
+}
+.preview {align-self:start;position:sticky;top:15px}
+.row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.small {
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+button {
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--ink);
+  padding:11px 14px;
+}
+button.active {
+  background:var(--ink);
+  color:white;
+  border-color:var(--ink);
+}
+.stage {
+  position:relative;
+  margin-top:18px;
+  background:#e7e3dc;
+  border-radius:6px;
+  overflow:hidden;
+  aspect-ratio:1/1.07;
+  touch-action:none;
+}
+.stage svg {width:100%;height:100%}
+.artboard {
+  position:absolute;
+  left:34%;
+  top:35%;
+  width:32%;
+  height:40%;
+  pointer-events:none;
+}
+.design {
+  position:absolute;
+  left:50%;
+  top:45%;
+  width:76%;
+  height:45%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:translate(-50%,-50%);
+  pointer-events:auto;
+  touch-action:none;
+  border:1px dashed transparent;
+}
+.design.selected {border-color:#222}
+.design img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.design span {
+  font-weight:800;
+  font-size:18px;
+  text-align:center;
+  overflow-wrap:anywhere;
+  pointer-events:none;
+}
+.note {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.controls h2 {
+  font:normal 36px Georgia,serif;
+  margin:15px 0;
+}
+.block {
+  border-top:1px solid var(--line);
+  padding-top:25px;
+  margin-top:25px;
+}
+.block h3 {
+  font-size:11px;
+  font-weight:normal;
+  letter-spacing:2px;
+  margin:0 0 18px;
+  text-transform:uppercase;
+}
+.colors,.sizes,.tabs,.tools {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.swatch {
+  width:44px;
+  height:44px;
+  padding:0;
+  border:3px solid white;
+  outline:1px solid #aaa;
+  border-radius:50%;
+}
+.swatch.active {
+  outline:2px solid #222;
+  outline-offset:3px;
+  background-color:inherit;
+}
+.sizes button {min-width:55px}
+.tabs button {flex:1}
+.upload {
+  display:block;
+  padding:30px 12px;
+  text-align:center;
+  border:1px dashed #aaa;
+  background:#f8f6f2;
+  cursor:pointer;
+  margin-top:15px;
+}
+.upload strong {display:block;margin-bottom:10px}
+.upload small {color:var(--muted);line-height:1.7}
+input[type=file] {display:none}
+.field {
+  width:100%;
+  padding:13px;
+  margin:12px 0;
+  background:white;
+  border:1px solid var(--line);
+}
+.two {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.range-label {
+  display:flex;
+  justify-content:space-between;
+  margin:18px 0 8px;
+  font-size:13px;
+}
+input[type=range] {
+  width:100%;
+  accent-color:#222;
+}
+.tools {margin-top:18px}
+.tools button {flex:1}
+.primary {
+  width:100%;
+  background:#222;
+  color:white;
+  padding:17px;
+  border:0;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin-top:12px;
+}
+.secondary {
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.status {font-size:13px;color:#526449}
+footer {
+  text-align:center;
+  padding:30px;
+  border-top:1px solid var(--line);
+  font-size:11px;
+  letter-spacing:2px;
+}
+[hidden] {display:none!important}
+@media(max-width:800px) {
+  .layout {grid-template-columns:1fr;padding:0 12px 50px}
+  .preview {position:static}
+  .panel {padding:17px}
+  header {padding:20px 14px}
+  .logo {font-size:16px;letter-spacing:2px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">NOIR ATELIER</a>
+  <a href="index.html">BACK TO STORE</a>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">NOIR ATELIER / CUSTOM STUDIO</div>
+  <h1>Made by you.</h1>
+  <p>Your vision. Your statement. One piece, entirely yours.</p>
+</section>
+
+<main class="layout">
+
+<section class="panel preview">
+  <div class="row">
+    <span class="small">LIVE DESIGN PREVIEW</span>
+    <div>
+      <button id="frontBtn" class="active">Front</button>
+      <button id="backBtn">Back</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <svg viewBox="0 0 500 540" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#000" stop-opacity=".1"/>
+          <stop offset=".3" stop-color="#fff" stop-opacity=".1"/>
+          <stop offset="1" stop-color="#000" stop-opacity=".13"/>
+        </linearGradient>
+      </defs>
+
+      <path id="shirt"
+        d="M194 85 Q250 117 306 85
+        L391 130 L464 227 L400 270
+        L352 219 L352 447
+        Q250 469 148 447
+        L148 219 L100 270
+        L36 227 L109 130 Z"
+        fill="#b5a58f"
+        stroke="#77736d"
+        stroke-width="2.5"/>
+
+      <path
+        d="M194 85 Q250 117 306 85
+        L391 130 L464 227 L400 270
+        L352 219 L352 447
+        Q250 469 148 447
+        L148 219 L100 270
+        L36 227 L109 130 Z"
+        fill="url(#fabric)"/>
+
+      <path
+        d="M194 85 Q250 147 306 85"
+        fill="none"
+        stroke="#817b75"
+        stroke-width="8"/>
+    </svg>
+    <div class="artboard" id="artboard"></div>
+  </div>
+
+  <div class="row" style="margin-top:15px">
+    <span class="note">Touch and drag your artwork.</span>
+    <button id="savePreview">Save Preview</button>
+  </div>
+</section>
+
+<section class="panel controls">
+  <div class="eyebrow">01 / YOUR CREATION</div>
+  <h2>Custom Oversized Tee</h2>
+  <p class="muted">Personalize your garment with artwork, colours and typography.</p>
+
+  <div class="block">
+    <h3>Garment Colour</h3>
+    <div class="colors" id="colors">
+      <button class="swatch" data-color="#262626" style="background:#262626" aria-label="Black"></button>
+      <button class="swatch" data-color="#f0ede7" style="background:#f0ede7" aria-label="White"></button>
+      <button class="swatch active" data-color="#b5a58f" style="background:#b5a58f" aria-label="Sand"></button>
+      <button class="swatch" data-color="#566174" style="background:#566174" aria-label="Slate"></button>
+      <button class="swatch" data-color="#767a65" style="background:#767a65" aria-label="Olive"></button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Choose Size</h3>
+    <div class="sizes" id="sizes">
+      <button>S</button>
+      <button>M</button>
+      <button>L</button>
+      <button class="active">XL</button>
+      <button>XXL</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Your Design</h3>
+    <div class="tabs">
+      <button id="artTab" class="active">Upload Artwork</button>
+      <button id="textTab">Add Text</button>
+    </div>
+
+    <div id="artFields">
+      <label class="upload" for="upload">
+        <strong>+ Upload Your Print</strong>
+        <small>Choose from Photos or Files<br>PNG, JPG or WebP</small>
+      </label>
+      <input type="file" id="upload" accept="image/png,image/jpeg,image/webp">
+      <p class="note">Transparent PNG images work best. Screenshots may need background removal before printing.</p>
+    </div>
+
+    <div id="textFields" hidden>
+      <input class="field" id="customText" placeholder="Enter your custom text" maxlength="60">
+      <div class="two">
+        <select class="field" id="font">
+          <option value="Arial">Sans Serif</option>
+          <option value="Georgia">Classic Serif</option>
+          <option value="Impact">Statement</option>
+          <option value="Courier New">Monospace</option>
+        </select>
+        <input class="field" id="textColor" type="color" value="#ffffff">
+      </div>
+      <button class="secondary" id="addText">Add Text to Shirt</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Edit Selected Design</h3>
+    <div class="range-label">
+      <span>Print Size</span>
+      <span id="sizeValue">100%</span>
+    </div>
+    <input id="scale" type="range" min="30" max="220" value="100">
+
+    <div class="range-label">
+      <span>Rotation</span>
+      <span id="rotationValue">0°</span>
+    </div>
+    <input id="rotation" type="range" min="-180" max="180" value="0">
+
+    <div class="tools">
+      <button id="center">Center</button>
+      <button id="remove">Remove</button>
+      <button id="clear">Clear Side</button>
+    </div>
+    <p class="note">Tap artwork to select it. Drag to move, or use sliders to resize and rotate.</p>
+  </div>
+
+  <div class="block">
+    <h3>Your Creation</h3>
+    <button class="primary" id="download">Download Design Preview</button>
+    <button class="secondary" id="save">Save My Design</button>
+    <p class="status" id="status"></p>
+    <p class="note">Preview only. Production artwork requires print-quality files and permission to use the design.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>NOIR ATELIER · CUSTOM STUDIO</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const state = {
+    side: "front",
+    color: "#b5a58f",
+    size: "XL",
+    selected: null,
+    designs: {front:[], back:[]}
+  };
+
+  let counter = 0;
+
+  function say(message) {
+    $("status").textContent = message;
+  }
+
+  function selected() {
+    return state.designs[state.side].find(
+      d => d.id === state.selected
+    );
+  }
+
+  function render() {
+    $("shirt").setAttribute("fill", state.color);
+
+    $("frontBtn").classList.toggle("active", state.side === "front");
+    $("backBtn").classList.toggle("active", state.side === "back");
+
+    const board = $("artboard");
+    board.replaceChildren();
+
+    state.designs[state.side].forEach(d => {
+      const el = document.createElement("div");
+      el.className = "design" + (d.id === state.selected ? " selected" : "");
+      el.dataset.id = d.id;
+      el.style.left = d.x + "%";
+      el.style.top = d.y + "%";
+      el.style.width = d.w + "%";
+      el.style.height = d.h + "%";
+      el.style.transform =
+        `translate(-50%,-50%) rotate(${d.rotation}deg)`;
+
+      if (d.type === "image") {
+        const img = document.createElement("img");
+        img.src = d.src;
+        img.alt = "Uploaded artwork";
+        el.append(img);
+      } else {
+        const span = document.createElement("span");
+        span.textContent = d.text;
+        span.style.color = d.color;
+        span.style.fontFamily = d.font;
+        el.append(span);
+      }
+
+      el.addEventListener("pointerdown", startDrag);
+      el.addEventListener("click", () => {
+        state.selected = d.id;
+        render();
+      });
+
+      board.append(el);
+    });
+
+    const d = selected();
+    $("scale").value = d ? d.scale : 100;
+    $("rotation").value = d ? d.rotation : 0;
+    $("sizeValue").textContent = (d ? d.scale : 100) + "%";
+    $("rotationValue").textContent = (d ? d.rotation : 0) + "°";
+  }
+
+  function setSide(side) {
+    state.side = side;
+    state.selected = null;
+    render();
+  }
+
+  $("frontBtn").onclick = () => setSide("front");
+  $("backBtn").onclick = () => setSide("back");
+
+  document.querySelectorAll(".swatch").forEach(button => {
+    button.onclick = () => {
+      state.color = button.dataset.color;
+      document.querySelectorAll(".swatch").forEach(b => {
+        b.classList.toggle("active", b === button);
+      });
+      render();
+    };
+  });
+
+  document.querySelectorAll("#sizes button").forEach(button => {
+    button.onclick = () => {
+      state.size = button.textContent;
+      document.querySelectorAll("#sizes button").forEach(b => {
+        b.classList.toggle("active", b === button);
+      });
+      say("Size selected: " + state.size);
+    };
+  });
+
+  function tab(name) {
+    $("artTab").classList.toggle("active", name === "art");
+    $("textTab").classList.toggle("active", name === "text");
+    $("artFields").hidden = name !== "art";
+    $("textFields").hidden = name !== "text";
+  }
+
+  $("artTab").onclick = () => tab("art");
+  $("textTab").onclick = () => tab("text");
+
+  function add(d) {
+    d.id = ++counter;
+    d.x = 50;
+    d.y = 45;
+    d.scale = 100;
+    d.rotation = 0;
+    d.w = 76;
+    d.h = 45;
+
+    state.designs[state.side].push(d);
+    state.selected = d.id;
+    render();
+    say("Design added to " + state.side);
+  }
+
+  $("upload").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!["image/png","image/jpeg","image/webp"].includes(file.type)) {
+      say("Please select a PNG, JPG or WebP image.");
+      return;
+    }
+
+    if (file.size > 8 * 1024 * 1024) {
+      say("Image must be smaller than 8 MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      add({type:"image", src:reader.result});
+    };
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  });
+
+  $("addText").onclick = () => {
+    const value = $("customText").value.trim();
+    if (!value) {
+      say("Enter your text first.");
+      return;
+    }
+
+    add({
+      type:"text",
+      text:value,
+      font:$("font").value,
+      color:$("textColor").value
+    });
+  };
+
+  $("scale").oninput = event => {
+    const d = selected();
+    if (!d) {
+      say("Select artwork first.");
+      return;
+    }
+    d.scale = Number(event.target.value);
+    d.w = 76 * d.scale / 100;
+    d.h = 45 * d.scale / 100;
+    render();
+  };
+
+  $("rotation").oninput = event => {
+    const d = selected();
+    if (!d) {
+      say("Select artwork first.");
+      return;
+    }
+    d.rotation = Number(event.target.value);
+    render();
+  };
+
+  $("center").onclick = () => {
+    const d = selected();
+    if (!d) {
+      say("Select artwork first.");
+      return;
+    }
+    d.x = 50;
+    d.y = 45;
+    render();
+  };
+
+  $("remove").onclick = () => {
+    if (!selected()) return;
+
+    state.designs[state.side] =
+      state.designs[state.side].filter(
+        d => d.id !== state.selected
+      );
+
+    state.selected = null;
+    render();
+  };
+
+  $("clear").onclick = () => {
+    state.designs[state.side] = [];
+    state.selected = null;
+    render();
+    say("Side cleared.");
+  };
+
+  let drag = null;
+
+  function startDrag(event) {
+    const d = state.designs[state.side].find(
+      x => x.id === Number(event.currentTarget.dataset.id)
+    );
+
+    if (!d) return;
+
+    state.selected = d.id;
+
+    drag = {
+      id:d.id,
+      startX:event.clientX,
+      startY:event.clientY,
+      x:d.x,
+      y:d.y
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.addEventListener("pointermove", moveDrag);
+    event.currentTarget.addEventListener("pointerup", endDrag, {once:true});
+    event.currentTarget.addEventListener("pointercancel", endDrag, {once:true});
+  }
+
+  function moveDrag(event) {
+    if (!drag) return;
+
+    const d = selected();
+    if (!d) return;
+
+    const rect = $("artboard").getBoundingClientRect();
+
+    d.x = Math.max(-15, Math.min(115,
+      drag.x + (event.clientX - drag.startX) / rect.width * 100
+    ));
+
+    d.y = Math.max(-15, Math.min(115,
+      drag.y + (event.clientY - drag.startY) / rect.height * 100
+    ));
+
+    event.currentTarget.style.left = d.x + "%";
+    event.currentTarget.style.top = d.y + "%";
+  }
+
+  function endDrag(event) {
+    event.currentTarget.removeEventListener("pointermove", moveDrag);
+    drag = null;
+    render();
+  }
+
+  $("save").onclick = () => {
+    try {
+      localStorage.setItem("noir-custom-studio", JSON.stringify({
+        version:1,
+        color:state.color,
+        size:state.size,
+        designs:state.designs
+      }));
+      say("Design saved on this device.");
+    } catch {
+      say("Unable to save. Try downloading a preview.");
+    }
+  };
+
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem("noir-custom-studio") || "null"
+    );
+
+    if (saved && saved.version === 1 && saved.designs) {
+      state.color = saved.color || state.color;
+      state.size = saved.size || state.size;
+      state.designs = saved.designs;
+
+      counter = Math.max(
+        0,
+        ...[...state.designs.front, ...state.designs.back].map(d => d.id)
+      );
+
+      document.querySelectorAll(".swatch").forEach(b => {
+        b.classList.toggle("active", b.dataset.color === state.color);
+      });
+
+      document.querySelectorAll("#sizes button").forEach(b => {
+        b.classList.toggle("active", b.textContent === state.size);
+      });
+    }
+  } catch {}
+
+  function exportPng() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1000;
+    canvas.height = 1080;
+
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#e7e3dc";
+    ctx.fillRect(0,0,1000,1080);
+
+    ctx.save();
+    ctx.scale(2,2);
+
+    const shirtPath = new Path2D(
+      "M194 85 Q250 117 306 85 L391 130 L464 227 " +
+      "L400 270 L352 219 L352 447 Q250 469 148 447 " +
+      "L148 219 L100 270 L36 227 L109 130 Z"
+    );
+
+    ctx.fillStyle = state.color;
+    ctx.fill(shirtPath);
+    ctx.strokeStyle = "#77736d";
+    ctx.lineWidth = 2.5;
+    ctx.stroke(shirtPath);
+
+    ctx.strokeStyle = "#817b75";
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(194,85);
+    ctx.quadraticCurveTo(250,147,306,85);
+    ctx.stroke();
+    ctx.restore();
+
+    const designs = state.designs[state.side];
+
+    Promise.all(designs.map(d => new Promise(resolve => {
+      if (d.type !== "image") {
+        resolve(null);
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = d.src;
+    }))).then(images => {
+      designs.forEach((d,i) => {
+        ctx.save();
+
+        const cx = (.34 + .32 * d.x / 100) * 1000;
+        const cy = (.35 + .40 * d.y / 100) * 1080;
+        const w = .32 * d.w / 100 * 1000;
+        const h = .40 * d.h / 100 * 1080;
+
+        ctx.translate(cx,cy);
+        ctx.rotate(d.rotation * Math.PI / 180);
+
+        if (d.type === "image" && images[i]) {
+          const img = images[i];
+          const ratio = Math.min(w / img.width, h / img.height);
+
+          ctx.drawImage(
+            img,
+            -img.width * ratio / 2,
+            -img.height * ratio / 2,
+            img.width * ratio,
+            img.height * ratio
+          );
+        } else if (d.type === "text") {
+          ctx.fillStyle = d.color;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.font = `bold ${Math.max(18,w / Math.max(4,d.text.length) * 1.5)}px ${d.font}`;
+          ctx.fillText(d.text,0,0,w);
+        }
+
+        ctx.restore();
+      });
+
+      ctx.fillStyle = "#38352e";
+      ctx.font = "20px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(
+        `NOIR ATELIER · ${state.side.toUpperCase()} · ${state.size}`,
+        500,1035
+      );
+
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `noir-atelier-${state.side}.png`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+
+      say("Preview downloaded.");
+    });
+  }
+
+  $("download").onclick = exportPng;
+  $("savePreview").onclick = exportPng;
+
+  render();
+})();
+</script>
+
+</body>
+</html>

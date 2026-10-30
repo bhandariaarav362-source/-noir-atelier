@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Bag | Noir Atelier</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag</a>
+   <a href="orders.html">My Orders</a>
+     </nav>
+  </header>
+
+  <main class="cart-page">
+    <h2>Your Shopping Bag</h2>
+    <p>Curated pieces, chosen by you.</p>
+
+    <div id="cart-items"></div>
+    <div id="cart-total"></div>
+  
+<a href="checkout.html"
+   class="checkout-btn"
+   id="checkout-button">
+  PROCEED TO CHECKOUT →
+</a>
+
+  <a href="index.html#collection" class="continue-shopping">
+  ← CONTINUE SHOPPING
+</a>
+  </main>
+<script>
+  const savedBag = JSON.parse(
+    localStorage.getItem("noirBag")
+  );
+
+  const bag = Array.isArray(savedBag)
+    ? savedBag
+    : savedBag ? [savedBag] : [];
+
+  const cartItems = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+
+  function displayBag() {
+    cartItems.innerHTML = "";
+    let total = 0;
+const checkoutButton =
+  document.getElementById("checkout-button");
+
+checkoutButton.style.display =
+  bag.length > 0 ? "block" : "none";
+    if (bag.length === 0) {
+      cartItems.textContent = "Your bag is empty.";
+      cartTotal.textContent = "";
+      return;
+    }
+
+    bag.forEach(function(item, index) {
+      total += item.price * item.quantity;
+
+      cartItems.innerHTML += `
+        <div class="cart-item">
+  <img
+  src="${item.name === 'Classic Black Jacket' ? 'black-jacket.webp.WEBP' : (item.image || 'lenen-shirt.jpg.JPEG')}"
+  alt="${item.name}"
+  class="cart-product-image"
+>
+  <h3>${item.name}</h3>
+          <p>Size: ${item.size}</p>
+          <div class="cart-quantity">
+  <button class="decrease-item" data-index="${index}">−</button>
+  <span>${item.quantity}</span>
+  <button class="increase-item" data-index="${index}">+</button>
+</div>
+          <p>Price: $${item.price} CAD each</p>
+          <button class="remove-item" data-index="${index}">
+            Remove from Bag
+          </button>
+        </div>
+      `;
+    });
+
+    cartTotal.textContent = "Total: $" + total + " CAD";
+  }
+
+  cartItems.addEventListener("click", function(event) { if (event.target.classList.contains("increase-item")) {
+  const index = Number(event.target.dataset.index);
+
+  bag[index].quantity += 1;
+
+  localStorage.setItem("noirBag", JSON.stringify(bag));
+
+  displayBag();
+  return;
+} if (event.target.classList.contains("decrease-item")) {
+  const index = Number(event.target.dataset.index);
+
+  if (bag[index].quantity > 1) {
+    bag[index].quantity -= 1;
+  }
+
+  localStorage.setItem("noirBag", JSON.stringify(bag));
+
+  displayBag();
+  return;
+}
+    if (event.target.classList.contains("remove-item")) {
+      const index = Number(event.target.dataset.index);
+
+      bag.splice(index, 1);
+
+      localStorage.setItem("noirBag", JSON.stringify(bag));
+
+      displayBag();
+    }
+  });
+
+  displayBag();
+</script>
+</body>
+</html>

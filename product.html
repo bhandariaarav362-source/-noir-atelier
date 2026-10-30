@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Signature Linen Shirt | Noir Atelier</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag (<span id="bag-count">0</span>)</a>
+    <a href="orders.html">My Orders</a>
+    </nav>
+  </header>
+
+  <main class="product-page">
+
+    <a href="index.html#collection" class="back-link">
+      ← Back to Collection
+    </a>
+
+    <section class="product-details">
+
+      <div class="product-gallery">
+        <img
+        id="product-image"
+          src="lenen-shirt.jpg.JPEG"
+          alt="Signature linen shirt"
+        >
+      </div>
+
+      <div class="product-info">
+        <p class="product-category">NOIR ATELIER / ESSENTIALS</p>
+
+        <h2 id="product-name">Signature Linen Shirt</h2>
+
+        <p class="product-price" id="product-price">$120 CAD</p>
+
+        <p class="product-description" id="product-description">
+          Effortless sophistication. A timeless linen shirt
+          designed for understated everyday elegance.
+        </p>
+ <div class="size-selector">
+  <p class="size-label">SELECT SIZE</p>
+
+  <div class="size-options">
+    <button type="button" class="size-btn">S</button>
+    <button type="button" class="size-btn">M</button>
+    <button type="button" class="size-btn">L</button>
+    <button type="button" class="size-btn">XL</button>
+  
+  </div>
+</div>
+<div class="quantity-selector">
+  <p class="size-label">QUANTITY</p>
+
+  <div class="quantity-controls">
+    <button type="button" id="decrease-qty">−</button>
+    <span id="quantity">1</span>
+    <button type="button" id="increase-qty">+</button>
+  </div>
+</div>
+
+<button type="button" id="add-to-bag" class="add-to-bag">
+  ADD TO BAG <span>→</span>
+</button>
+<a href="cart.html" class="view-bag-btn">
+  VIEW SHOPPING BAG →
+</a>
+</div>    <!-- product-info -->
+</div>    <!-- outer product layout -->
+  </div>
+</div>
+
+
+
+</div>
+                      </div>
+
+    </section>
+
+  </main>
+<script>
+  const sizeButtons = document.querySelectorAll(".size-btn");
+
+  sizeButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+
+      sizeButtons.forEach(function(btn) {
+        btn.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+    });
+  });
+  let quantity = 1;
+
+const quantityDisplay = document.getElementById("quantity");
+const increaseBtn = document.getElementById("increase-qty");
+const decreaseBtn = document.getElementById("decrease-qty");
+
+increaseBtn.addEventListener("click", function() {
+  quantity++;
+  quantityDisplay.textContent = quantity;
+});
+
+decreaseBtn.addEventListener("click", function() {
+  if (quantity > 1) {
+    quantity--;
+    quantityDisplay.textContent = quantity;
+  }
+}); 
+const addToBagBtn = document.getElementById("add-to-bag");
+
+addToBagBtn.addEventListener("click", function() {
+  const selectedSize = document.querySelector(".size-btn.selected");
+
+  if (!selectedSize) {
+    alert("Please select a size first.");
+    return;
+  }
+
+  const size = selectedSize.textContent.trim();
+ const total = quantity * Number(
+  document.getElementById("product-price").textContent.replace(/[^0-9.]/g, "")
+);
+
+  console.log(
+quantity + " × " + document.getElementById("product-name").textContent + "\n" +
+    "Size: " + size + "\n" +
+    "Total: $" + total + " CAD"
+      );
+ const productName = document.getElementById("product-name").textContent;
+
+const productPrice = Number(
+  document.getElementById("product-price").textContent.replace(/[^0-9.]/g, "")
+);
+
+const bagItem = {
+  name: productName,
+  size: size,
+  quantity: quantity,
+  price: productPrice,
+  image: document.getElementById("product-image").src
+};
+
+
+  const savedBag = JSON.parse(
+  localStorage.getItem("noirBag")
+);
+
+const bag = Array.isArray(savedBag)
+  ? savedBag
+  : savedBag ? [savedBag] : [];
+
+const existingItem = bag.find(function(item) {
+  return item.name === bagItem.name &&
+         item.size === bagItem.size;
+});
+
+if (existingItem) {
+  existingItem.quantity += bagItem.quantity;
+} else {
+  bag.push(bagItem);
+}
+
+localStorage.setItem("noirBag", JSON.stringify(bag));
+updateBagCount();
+addToBagBtn.innerHTML = "ADDED TO BAG ✓";
+
+setTimeout(function() {
+  addToBagBtn.innerHTML = "ADD TO BAG <span>➜</span>";
+}, 1500);
+const bagCount = bag.reduce(function(total, item) {
+  return total + item.quantity;
+}, 0);
+
+document.getElementById("bag-count").textContent = bagCount;
+});
+function updateBagCount() {
+  const savedBag = JSON.parse(
+    localStorage.getItem("noirBag")
+  );
+
+  const bag = Array.isArray(savedBag)
+    ? savedBag
+    : savedBag ? [savedBag] : [];
+
+  const totalItems = bag.reduce(function(total, item) {
+    return total + item.quantity;
+  }, 0);
+
+  document.getElementById("bag-count").textContent = totalItems;
+}
+
+updateBagCount();
+const urlParams = new URLSearchParams(window.location.search);
+
+const selectedProduct = urlParams.get("item");
+
+console.log("Selected product:", selectedProduct);
+const products = {
+  shirt: {
+    name: "Signature Linen Shirt",
+    price: 120,
+    image: "lenen-shirt.jpg.JPEG",
+    description: "Effortless sophistication. A timeless linen shirt designed for understated everyday elegance."
+  },
+
+  jacket: {
+    name: "Classic Black Jacket",
+    price: 185,
+    image: "black-jacket.webp.WEBP",
+    description: "A statement in modern sophistication. This sleek black jacket combines timeless design with effortless everyday style."
+  }
+};
+
+const product = products[selectedProduct] || products.shirt;
+
+document.getElementById("product-image").src = product.image;
+document.getElementById("product-image").alt = product.name;
+document.getElementById("product-name").textContent = product.name;
+document.getElementById("product-price").textContent =
+  "$" + product.price + " CAD";
+document.getElementById("product-description").textContent =
+  product.description;
+</script>
+</body>
+</html>

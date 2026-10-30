@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | Noir Atelier</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #f4f1eb;
+      color: #222;
+      font-family: Georgia, serif;
+    }
+
+    header {
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd6cb;
+    }
+
+    header h1 {
+      font-size: 27px;
+      font-weight: normal;
+      letter-spacing: 5px;
+      margin: 0 0 20px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #222;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 850px;
+      margin: 65px auto;
+      padding: 0 22px 90px;
+    }
+
+    .eyebrow {
+      color: #8b785e;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 44px;
+      font-weight: normal;
+      margin: 22px 0 12px;
+    }
+
+    .subtitle {
+      color: #777;
+      text-align: center;
+      font-size: 15px;
+      margin-bottom: 45px;
+    }
+
+    .order-card {
+      background: #faf8f4;
+      border: 1px solid #e1dcd3;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      padding-bottom: 25px;
+      border-bottom: 1px solid #ddd6cb;
+    }
+
+    .small-label {
+      display: block;
+      color: #8b785e;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .order-number {
+      font-size: 19px;
+    }
+
+    .order-date {
+      color: #777;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .status {
+      color: #8b785e;
+      border: 1px solid #8b785e;
+      padding: 10px 13px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .order-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 0;
+      border-bottom: 1px solid #e1dcd3;
+    }
+
+    .order-item img {
+      width: 75px;
+      height: 85px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .item-details {
+      flex: 1;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .item-details strong {
+      display: block;
+      font-size: 15px;
+      font-weight: normal;
+    }
+
+    .item-price {
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .order-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding-top: 25px;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 55px 25px;
+      background: #faf8f4;
+      border: 1px solid #e1dcd3;
+    }
+
+    .empty-state h3 {
+      font-size: 27px;
+      font-weight: normal;
+    }
+
+    .empty-state p {
+      color: #777;
+      line-height: 1.8;
+    }
+
+    .shop-button {
+      display: block;
+      max-width: 350px;
+      margin: 35px auto 0;
+      padding: 20px;
+      text-align: center;
+      text-decoration: none;
+      background: #222;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    .demo-note {
+      text-align: center;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.8;
+      margin-top: 35px;
+    }
+
+    @media (max-width: 600px) {
+      h2 { font-size: 36px; }
+      .order-card { padding: 20px; }
+      .order-top { flex-direction: column; }
+      .item-price { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag</a>
+      <a href="orders.html">My Orders</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow">NOIR ATELIER / YOUR ACCOUNT</p>
+    <h2>My Orders.</h2>
+    <p class="subtitle">
+      A history of your selections.
+    </p>
+
+    <div id="orders-list"></div>
+
+    <a href="index.html#collection" class="shop-button">
+      EXPLORE COLLECTION →
+    </a>
+
+    <p class="demo-note">
+      DEMONSTRATION ORDER HISTORY
+      <br>
+      NO REAL PURCHASES OR SHIPMENTS
+    </p>
+  </main>
+
+  <script>
+    const ordersList =
+      document.getElementById("orders-list");
+
+    function readStorage(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key))
+          ?? fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    let orders = readStorage("noirOrderHistory", []);
+
+    if (!Array.isArray(orders)) {
+      orders = [];
+    }
+
+    // Include the last demo order if it is not
+    // already in the history.
+    const latestOrder =
+      readStorage("noirDemoOrder", null);
+
+    if (latestOrder && Array.isArray(latestOrder.items)) {
+      const alreadySaved = orders.some(order =>
+        order.createdAt === latestOrder.createdAt
+      );
+
+      if (!alreadySaved) {
+        orders.push(latestOrder);
+
+        localStorage.setItem(
+          "noirOrderHistory",
+          JSON.stringify(orders)
+        );
+      }
+    }
+
+    function money(value) {
+      return "$" + Number(value || 0).toFixed(2) + " CAD";
+    }
+
+    function orderNumber(order) {
+      const date = new Date(order.createdAt);
+      return "NA-" + date.getFullYear() + "-" +
+        String(date.getTime()).slice(-6);
+    }
+
+    function addText(parent, tag, value, className) {
+      const element = document.createElement(tag);
+      element.textContent = value;
+
+      if (className) element.className = className;
+
+      parent.appendChild(element);
+      return element;
+    }
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = `
+        <div class="empty-state">
+          <h3>No Orders Yet.</h3>
+          <p>
+            Your completed demo purchases
+            will appear here.
+          </p>
+        </div>
+      `;
+    } else {
+      orders.slice().reverse().forEach(function(order) {
+        if (!Array.isArray(order.items)) return;
+
+        const card = document.createElement("article");
+        card.className = "order-card";
+
+        const top = document.createElement("div");
+        top.className = "order-top";
+
+        const info = document.createElement("div");
+
+        addText(info, "span", "ORDER NUMBER", "small-label");
+        addText(info, "div", orderNumber(order), "order-number");
+
+        const date = new Date(order.createdAt);
+
+        addText(
+          info,
+          "div",
+          date.toLocaleDateString("en-CA", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }),
+          "order-date"
+        );
+
+        addText(
+          top,
+          "span",
+          "DEMO CONFIRMED",
+          "status"
+        );
+
+        top.prepend(info);
+        card.appendChild(top);
+
+        order.items.forEach(function(item) {
+          const row = document.createElement("div");
+          row.className = "order-item";
+
+          const img = document.createElement("img");
+          img.src = item.image || "";
+          img.alt = item.name || "Product";
+
+          const details = document.createElement("div");
+          details.className = "item-details";
+
+          addText(
+            details,
+            "strong",
+            item.name || "Product"
+          );
+
+          addText(
+            details,
+            "div",
+            "Size: " + (item.size || "N/A") +
+            " | Qty: " + (Number(item.quantity) || 1)
+          );
+
+          const price = addText(
+            row,
+            "span",
+            money(
+              Number(item.price || 0) *
+              Number(item.quantity || 1)
+            ),
+            "item-price"
+          );
+
+          row.prepend(img, details);
+          card.appendChild(row);
+        });
+
+        const total = document.createElement("div");
+        total.className = "order-total";
+
+        addText(total, "span", "Demo Total");
+        addText(total, "span", money(order.total));
+
+        card.appendChild(total);
+        ordersList.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment | Noir Atelier</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f1eb;
+      color: #222;
+      font-family: Georgia, serif;
+    }
+
+    header {
+      padding: 32px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd6cb;
+    }
+
+    header h1 {
+      font-size: 27px;
+      font-weight: normal;
+      letter-spacing: 5px;
+      margin: 0 0 20px;
+    }
+
+    nav a {
+      color: #222;
+      text-decoration: none;
+      margin: 0 12px;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 55px auto;
+      padding: 0 22px 70px;
+    }
+
+    .eyebrow {
+      color: #8b785e;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 39px;
+      font-weight: normal;
+      text-align: center;
+      margin: 20px 0 12px;
+    }
+
+    .subtitle {
+      color: #777;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 45px;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 45px;
+    }
+
+    section {
+      background: #faf8f4;
+      border: 1px solid #e1dcd3;
+      padding: 30px;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: normal;
+      margin: 0 0 30px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #d5cec3;
+      background: white;
+      border-radius: 0;
+      font-size: 15px;
+      color: #222;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .payment-choice {
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid #ddd6cb;
+    }
+
+    .payment-choice p {
+      color: #777;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .demo-option {
+      border: 1px solid #8b785e;
+      padding: 18px;
+      margin-top: 18px;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .demo-option input {
+      width: auto;
+      margin-right: 10px;
+      accent-color: #8b785e;
+    }
+
+    .order-item {
+      display: flex;
+      gap: 15px;
+      padding: 18px 0;
+      border-bottom: 1px solid #e1dcd3;
+      align-items: center;
+    }
+
+    .order-item img {
+      width: 75px;
+      height: 85px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .order-item-details {
+      flex: 1;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .order-item-details strong {
+      font-size: 15px;
+      font-weight: normal;
+    }
+
+    .item-price {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 18px 0;
+      font-size: 14px;
+    }
+
+    .grand-total {
+      border-top: 1px solid #cfc7bb;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .place-order {
+      width: 100%;
+      padding: 21px;
+      margin-top: 25px;
+      background: #222;
+      color: white;
+      border: none;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      cursor: pointer;
+    }
+
+    .place-order:hover {
+      background: #8b785e;
+    }
+
+    .place-order:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .demo-note {
+      color: #888;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.8;
+      margin-top: 20px;
+    }
+
+    .empty-message {
+      color: #777;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      section {
+        padding: 22px;
+      }
+
+      h2 {
+        font-size: 34px;
+      }
+
+      .two-columns {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>NOIR ATELIER</h1>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#collection">Collection</a>
+      <a href="cart.html">Bag</a>
+    <a href="orders.html">My Orders</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <p class="eyebrow">NOIR ATELIER / PAYMENT</p>
+
+    <h2>Complete Your Order.</h2>
+
+    <p class="subtitle">
+      A considered experience, from selection to delivery.
+    </p>
+
+    <form id="payment-form">
+
+      <div class="checkout-grid">
+
+        <section>
+          <h3>01 / Shipping Information</h3>
+
+          <label for="full-name">Full Name</label>
+          <input
+            id="full-name"
+            type="text"
+            placeholder="Your full name"
+            autocomplete="name"
+            required
+          >
+
+          <label for="email">Email Address</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+
+          <label for="address">Street Address</label>
+          <input
+            id="address"
+            type="text"
+            placeholder="123 Example Street"
+            autocomplete="street-address"
+            required
+          >
+
+          <div class="two-columns">
+            <div>
+              <label for="city">City</label>
+              <input id="city" type="text" required>
+            </div>
+
+            <div>
+              <label for="postal">Postal Code</label>
+              <input
+                id="postal"
+                type="text"
+                placeholder="A1A 1A1"
+                required
+              >
+            </div>
+          </div>
+
+          <label for="country">Country</label>
+          <select id="country" required>
+            <option value="Canada">Canada</option>
+          </select>
+
+          <div class="payment-choice">
+
+            <h3>02 / Payment Method</h3>
+
+            <p>
+              This is a portfolio demonstration.
+              No real card details or payment are required.
+            </p>
+
+            <label class="demo-option">
+              <input
+                type="radio"
+                name="payment-method"
+                value="demo"
+                checked
+              >
+              DEMO PAYMENT — $0 CHARGED
+            </label>
+
+          </div>
+        </section>
+
+        <section>
+          <h3>Your Order</h3>
+
+          <div id="order-items"></div>
+
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span id="subtotal">$0.00 CAD</span>
+          </div>
+
+          <div class="total-row">
+            <span>Demo Shipping</span>
+            <span>FREE</span>
+          </div>
+
+          <div class="total-row">
+            <span>Demo Tax</span>
+            <span>Not calculated</span>
+          </div>
+
+          <div class="total-row grand-total">
+            <span>Demo Total</span>
+            <span id="grand-total">$0.00 CAD</span>
+          </div>
+
+          <button
+            class="place-order"
+            id="place-order"
+            type="submit"
+          >
+            PLACE DEMO ORDER →
+          </button>
+
+          <p class="demo-note">
+            DEMONSTRATION ONLY
+            <br>
+            NO REAL PAYMENT OR ORDER WILL OCCUR
+          </p>
+
+        </section>
+
+      </div>
+    </form>
+
+  </main>
+
+  <script>
+    const savedBag = JSON.parse(
+      localStorage.getItem("noirBag") || "[]"
+    );
+
+    const bag = Array.isArray(savedBag)
+      ? savedBag
+      : savedBag ? [savedBag] : [];
+
+    const orderItems =
+      document.getElementById("order-items");
+
+    const subtotalElement =
+      document.getElementById("subtotal");
+
+    const grandTotalElement =
+      document.getElementById("grand-total");
+
+    const placeOrderButton =
+      document.getElementById("place-order");
+
+    let subtotal = 0;
+
+    const money = amount =>
+      "$" + amount.toFixed(2) + " CAD";
+
+    if (bag.length === 0) {
+      orderItems.innerHTML =
+        '<p class="empty-message">Your bag is empty. <a href="index.html#collection">Continue shopping</a>.</p>';
+
+      placeOrderButton.disabled = true;
+    } else {
+      bag.forEach(function(item) {
+        const quantity = Number(item.quantity) || 1;
+        const price = Number(item.price) || 0;
+        const lineTotal = quantity * price;
+
+        subtotal += lineTotal;
+
+        const row = document.createElement("div");
+        row.className = "order-item";
+
+        const picture = document.createElement("img");
+        picture.src = item.image || "";
+        picture.alt = item.name || "Product";
+
+        const details = document.createElement("div");
+        details.className = "order-item-details";
+
+        const name = document.createElement("strong");
+        name.textContent = item.name || "Product";
+
+        const info = document.createElement("div");
+        info.textContent =
+          "Size: " + (item.size || "N/A") +
+          " | Qty: " + quantity;
+
+        const amount = document.createElement("span");
+        amount.className = "item-price";
+        amount.textContent = money(lineTotal);
+
+        details.appendChild(name);
+        details.appendChild(info);
+
+        row.appendChild(picture);
+        row.appendChild(details);
+        row.appendChild(amount);
+
+        orderItems.appendChild(row);
+      });
+    }
+
+    subtotalElement.textContent = money(subtotal);
+    grandTotalElement.textContent = money(subtotal);
+
+    document.getElementById("payment-form")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        if (bag.length === 0) return;
+
+        const order = {
+          items: bag,
+          total: subtotal,
+          name: document.getElementById("full-name").value,
+          createdAt: new Date().toISOString()
+        };
+
+        localStorage.setItem(
+          "noirDemoOrder",
+          JSON.stringify(order)
+        );
+
+        window.location.href = "confirmation.html";
+      });
+  </script>
+
+</body>
+</html>
